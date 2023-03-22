@@ -1,16 +1,12 @@
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
 const passport = require('passport');
 require('./passport')
+const jwt = require('jsonwebtoken');
 const axios = require('axios')
 const port = 3000;
 
 
-
-// Use body-parser middleware
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 // Use Passport.js middleware
 app.use(passport.initialize());
@@ -20,12 +16,12 @@ app.get('/protected', passport.authenticate('jwt', { session: false }), (req, re
     res.send('This is a protected route.');
 });
 
-const jwt = require('jsonwebtoken');
+
 
 // Generate a JWT token
 const token = jwt.sign({ sub: '1234567890' }, 'my_secret_key');
 
-// Include the token in the "Authorization" header of your requests
+// Include the token in the "Authorization" header of your requests and make it available to the user
 axios.get('http://localhost:3000/protected', {
     headers: {
         'Authorization': `Bearer ${token}`
