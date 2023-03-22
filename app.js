@@ -1,9 +1,42 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+const passport = require('passport');
+require('./passport')
+const axios = require('axios')
 const port = 3000;
 
-// Addition endpoint
-app.get('/addition/:num1/:num2', (req, res) => {
+
+
+// Use body-parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// Use Passport.js middleware
+app.use(passport.initialize());
+
+// Define a protected route that requires authentication and authorization
+app.get('/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
+    res.send('This is a protected route.');
+});
+
+const jwt = require('jsonwebtoken');
+
+// Generate a JWT token
+const token = jwt.sign({ sub: '1234567890' }, 'my_secret_key');
+
+// Include the token in the "Authorization" header of your requests
+axios.get('http://localhost:3000/protected', {
+    headers: {
+        'Authorization': `Bearer ${token}`
+    }
+})
+    .then(response => console.log(response.data + ` \nThe token you need to put in Postman -> Authorization -> Bearer token is: ${token}`))
+    .catch(error => console.error(error));
+
+
+// Addition endpoint with authentication token requested
+app.get('/addition/:num1/:num2',passport.authenticate('jwt', { session: false }), (req, res) => {
     const num1 = Number(req.params.num1);
     const num2 = Number(req.params.num2);
 
@@ -15,8 +48,8 @@ app.get('/addition/:num1/:num2', (req, res) => {
     }
 });
 
-// Subtraction endpoint
-app.get('/subtraction/:num1/:num2', (req, res) => {
+// Subtraction endpoint  with authentication token requested
+app.get('/subtraction/:num1/:num2',passport.authenticate('jwt', { session: false }), (req, res) => {
     const num1 = Number(req.params.num1);
     const num2 = Number(req.params.num2);
 
@@ -28,8 +61,8 @@ app.get('/subtraction/:num1/:num2', (req, res) => {
     }
 });
 
-// Multiplication endpoint
-app.get('/multiplication/:num1/:num2', (req, res) => {
+// Multiplication endpoint with authentication token requested
+app.get('/multiplication/:num1/:num2',passport.authenticate('jwt', { session: false }), (req, res) => {
     const num1 = Number(req.params.num1);
     const num2 = Number(req.params.num2);
 
@@ -41,8 +74,8 @@ app.get('/multiplication/:num1/:num2', (req, res) => {
     }
 });
 
-// Division endpoint
-app.get('/division/:num1/:num2', (req, res) => {
+// Division endpoint with authentication token requested
+app.get('/division/:num1/:num2',passport.authenticate('jwt', { session: false }), (req, res) => {
     const num1 = Number(req.params.num1);
     const num2 = Number(req.params.num2);
 
