@@ -39,13 +39,11 @@ app.get('/addition/:num1/:num2',auth, (req, res) => {
 
         if (isNaN((num1))) {
             throw new Error(res.status(400).send('num1 incorrectly defined.'));
-
         }
-
-        if (isNaN((num2))) {
+        else if (isNaN((num2))) {
             throw new Error(res.status(400).send('num2 incorrectly defined.'));
         }
-        if (isNaN(num1) || isNaN(num2)) {
+        else if (isNaN(num1) || isNaN(num2)) {
            throw new Error(res.status(400).send('Invalid input parameters. Please provide valid numbers.'));
         } else {
             const result = num1 + num2;
@@ -65,13 +63,11 @@ app.get('/subtraction/:num1/:num2', auth, (req, res) => {
 
         if (isNaN((num1))) {
             throw new Error(res.status(400).send('num1 incorrectly defined.'));
-
         }
-
-        if (isNaN((num2))) {
+        else if (isNaN((num2))) {
             throw new Error(res.status(400).send('num2 incorrectly defined.'));
         }
-        if (isNaN(num1) || isNaN(num2)) {
+        else if (isNaN(num1) || isNaN(num2)) {
             throw new Error(res.status(400).send('Invalid input parameters. Please provide valid numbers.'));
         } else {
             const result = num1 - num2;
@@ -91,9 +87,7 @@ app.get('/multiplication/:num1/:num2',passport.authenticate('jwt', { session: fa
 
         if (isNaN((num1))) {
             throw new Error(res.status(400).send('num1 incorrectly defined.'));
-
         }
-
         else if (isNaN((num2))) {
             throw new Error(res.status(400).send('num2 incorrectly defined.'));
         }
