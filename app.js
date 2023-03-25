@@ -5,14 +5,14 @@ require('./passport')
 const jwt = require('jsonwebtoken');
 const axios = require('axios')
 const port = 3000;
-const auth =  passport.authenticate('jwt', { session: false })
+const tokenAuthenticate =  passport.authenticate('jwt', { session: false })
 
 
 // Use Passport.js middleware
 app.use(passport.initialize());
 
 // Define a protected route that requires authentication and authorization
-app.get('/protected', auth, (req, res) => {
+app.get('/protected', tokenAuthenticate, (req, res) => {
     res.send('This is a protected route.');
 });
 
@@ -32,7 +32,7 @@ axios.get('http://localhost:3000/protected', {
 
 
 // Addition endpoint with authentication token requested
-app.get('/addition/:num1/:num2',auth, (req, res) => {
+app.get('/addition/:num1/:num2',tokenAuthenticate, (req, res) => {
     try {
         const num1 = Number(req.params.num1);
         const num2 = Number(req.params.num2);
@@ -56,7 +56,7 @@ app.get('/addition/:num1/:num2',auth, (req, res) => {
 });
 
 // Subtraction endpoint  with authentication token requested
-app.get('/subtraction/:num1/:num2', auth, (req, res) => {
+app.get('/subtraction/:num1/:num2', tokenAuthenticate, (req, res) => {
     try {
         const num1 = Number(req.params.num1);
         const num2 = Number(req.params.num2);
@@ -80,7 +80,7 @@ app.get('/subtraction/:num1/:num2', auth, (req, res) => {
 });
 
 // Multiplication endpoint with authentication token requested
-app.get('/multiplication/:num1/:num2',passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/multiplication/:num1/:num2',tokenAuthenticate, (req, res) => {
     try {
         const num1 = Number(req.params.num1);
         const num2 = Number(req.params.num2);
@@ -104,7 +104,7 @@ app.get('/multiplication/:num1/:num2',passport.authenticate('jwt', { session: fa
 });
 
 // Division endpoint with authentication token requested
-app.get('/division/:num1/:num2',passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/division/:num1/:num2',tokenAuthenticate, (req, res) => {
 
     try {
         const num1 = Number(req.params.num1);
